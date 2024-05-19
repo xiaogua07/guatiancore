@@ -13,7 +13,12 @@
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    // Make the fetch request to the third party API endpoint
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+      "Access-Control-Max-Age": "86400",
+    };
+
     const response = await fetch('https://devapi.qweather.com/v7/weather/3d?location=120.15,30.31&key=' + env.qweatherkey, {
       method: 'GET',
       headers: {
@@ -26,8 +31,18 @@ export default {
     const data = await response.json();
 
     // Use the data to modify or manipulate your content as needed
-    const res = Response.json(data as any);
-    res.headers.set('Content-Type', 'application/json');
+    const res = Response.json(data, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json'
+      }
+    });
+    // const res = new Response(Response.json(data) as any, {
+    //   headers: {
+    //       ...corsHeaders,
+    //       'Content-Type': 'application/json' 
+    //   }
+    // });
     return res;
   },
 };
