@@ -20,12 +20,13 @@ export default {
         'Content-Type': 'application/json'
       }
     });
+    console.log(`dlskdhsjgasa: ${JSON.stringify(response)}`)
 
     // Retrieve the data from the response
     const data = await response.json();
 
     // Use the data to modify or manipulate your content as needed
-    const res = new Response(data as any);
+    const res = Response.json(data as any);
     res.headers.set('Content-Type', 'application/json');
     return res;
   },
