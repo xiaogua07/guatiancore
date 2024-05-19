@@ -13,6 +13,18 @@
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+		// Make the fetch request to the third party API endpoint
+  const response = await fetch('https://devapi.qweather.com/v7/weather/3d?location=120.15,30.31&key=' + env.qweatherkey, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  // Retrieve the data from the response
+  const data = await response.json();
+
+  // Use the data to modify or manipulate your content as needed
+  return new Response(data as any);
 	},
 };
